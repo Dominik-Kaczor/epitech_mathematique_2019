@@ -1,0 +1,6 @@
+Average return time: 1m 30s
+Standard deviation: 1.118
+Time after which 50% of the ducks are back: 1m 14s
+Time after which 99% of the ducks are back: 5m 18s
+Percentage of ducks back after 1 minute: 40.0%
+Percentage of ducks back after 2 minutes: 74.8%

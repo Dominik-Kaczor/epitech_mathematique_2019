@@ -1,0 +1,223 @@
+#!/usr/bin/env python3                                                          
+from sys import*
+from math import*
+import random
+
+def get_nb_list(d1, d2, d3, d4, d5, to_find):
+   count = 0
+   if (d1 == to_find):
+      count += 1
+   if (d2 == to_find):
+      count += 1
+   if (d3 == to_find):
+      count += 1
+   if (d4 == to_find):
+      count += 1
+   if (d5 == to_find):
+      count += 1
+   return (count)
+
+def loi_bin(n, k):
+   return (factorial(n) / (factorial(k) * factorial(n - k)) * pow(1/6, k) * pow(5/6, n - k))
+
+def do_pair(d1, d2, d3, d4, d5, ca):
+   pair_nb = get_nb_list(d1, d2, d3, d4, d5, ca)
+   res = 0
+   if (pair_nb >= 2):
+      res = 1
+      print("Chances to get a", ca, "pair: 100.00%")
+   else:
+      for i in range(2 - pair_nb, 5 - pair_nb + 1):
+         res += loi_bin(5 - pair_nb, i)
+      print("Chances to get a", ca, "pair: %0.2f%%" % (res * 100))
+   return (res)
+
+def do_three(d1, d2, d3, d4, d5, ca):
+   three_nb = get_nb_list(d1, d2, d3, d4, d5, ca)
+   res = 0
+   if (three_nb >= 3):
+      res = 1
+      print("Chances to get a", ca,"three-of-a-kind: 100.00%")
+   else:
+      for i in range(3 - three_nb, 5 - three_nb + 1):
+         res += loi_bin(5 - three_nb, i)
+      print("Chances to get a", ca,"three-of-a-kind: %0.2f%%" % (res * 100))
+   return (res)
+
+def do_four(d1, d2, d3, d4, d5, ca):
+   four_nb = get_nb_list(d1, d2, d3, d4, d5, ca)
+   res = 0
+   if (four_nb >= 4):
+      res = 1
+      print("Chances to get a", ca,"four-of-a-kind: 100.00%")
+   else:
+      for i in range(4 - four_nb, 5 - four_nb + 1):
+         res += loi_bin(5 - four_nb, i)
+      print("Chances to get a", ca,"four-of-a-kind: %0.2f%%" % (res * 100))
+   return (res)
+
+def do_yams(d1, d2, d3, d4, d5, ca):
+   yams_nb = get_nb_list(d1, d2, d3, d4, d5, ca)
+   res = 0
+   if (yams_nb >= 5):
+      res = 1
+      print("Chances to get a", ca,"yams: 100.00%")
+   else:
+      for i in range(5 - yams_nb, 5 - yams_nb + 1):
+         res += loi_bin(5 - yams_nb, i)
+      print("Chances to get a", ca,"yams: %0.2f%%" % (res * 100))
+   return (res)
+
+def do_full(d1, d2, d3, d4, d5, ca, cb):
+   if (ca == cb or ca == 0 or ca == 0):
+      exit (84)
+   ca_nb = get_nb_list(d1, d2, d3, d4, d5, ca)
+   cb_nb = get_nb_list(d1, d2, d3, d4, d5, cb)
+   res = 0
+   if (ca_nb == 3 and cb_nb == 2):
+      res = 1
+      print("Chances to get a", ca, "full of " + str(cb) +": 100.00%")
+   else:
+      if (ca_nb >= 3):
+         ca_nb = 3
+      if (cb_nb >= 2):
+         cb_nb = 2
+      res = ((factorial(5 -(ca_nb + cb_nb)) / (factorial(3 - cb_nb) * factorial(2 - cb_nb))) * (factorial(2 - cb_nb) / (factorial(2 - cb_nb)))) / pow(6, (5 - (ca_nb + cb_nb)))
+      print("Chances to get a", ca, "full of " + str(cb) +": %0.2f%%" % (res * 100))
+   return (res)
+
+def do_straight(d1, d2, d3, d4, d5, ca):
+   res = 0
+   cout = 0
+   if (ca < 5):
+      exit (84)
+   if (ca == 6):
+      for i in range(2, 7):
+         if (get_nb_list(d1, d2, d3, d4, d5, i) >= 1):
+            cout += 1
+   else:
+      for i in range(1, 6):
+         if (get_nb_list(d1, d2, d3, d4, d5, i) >= 1):
+            cout += 1
+   if (cout == 5):
+      res = 1
+      print("Chances to get a" + str(ca) + " straight: 100.00%")
+   else:
+      res = factorial(5 - cout) / pow(6, (5 - cout))
+      print("Chances to get a " + str(ca) + " straight: %0.2f%%" % (res * 100))
+   return (res)
+
+def start_cal(d1, d2, d3, d4, d5, combi, ca, cb):
+   if (combi.find("pair") != -1):
+      do_pair(d1, d2, d3, d4, d5, ca)
+   if (combi.find("three") != -1):
+      do_three(d1, d2, d3, d4, d5, ca)
+   if (combi.find("four") != -1):
+      do_four(d1, d2, d3, d4, d5, ca)
+   if (combi.find("yams") != -1):
+      do_yams(d1, d2, d3, d4, d5, ca)
+   if (combi.find("full") != -1):
+      do_full(d1, d2, d3, d4, d5, ca, cb)
+   if (combi.find("straight") != -1):
+      do_straight(d1, d2, d3, d4, d5, ca)
+   return (0)
+
+def check_dee(d1, d2, d3, d4, d5):
+   for nb in d1, d2, d3, d4, d5:
+      if nb in "0123456":
+         continue
+      else:
+         print(nb, "It's not a valid number") 
+         exit (84)
+   return (0)
+
+def check_limite_dee(d):
+   if (d >= 0 and d <= 6):
+      return (d)
+   else:
+      print(d, "is not number of the dee")
+      exit (84)
+
+
+def check_random(d1, d2, d3, d4, d5):
+   if (check_limite_dee(d1) == 0):
+      d1 = d1
+   elif (check_limite_dee(d2) == 0):
+      d2 = d2
+   elif (check_limite_dee(d3) == 0):
+      d3 = d3
+   elif (check_limite_dee(d4) == 0):
+      d4 = d4
+   elif (check_limite_dee(d5) == 0):
+      d5 = d5
+   return (d1, d2, d3, d4, d5)
+
+def check_combi(combi):
+   if (combi == "pair"):
+      return combi
+   elif (combi == "three"):
+      return combi
+   elif (combi == "four"):
+      return combi
+   elif (combi == "full"):
+      return combi
+   elif (combi == "straight"):
+      return combi
+   elif (combi == "yams"):
+      return combi
+   else:
+      print(combi, "is bad combination")
+      exit (84)
+
+def check_combi_nb(c):
+   for nb in c:
+      if nb in "123456":
+         continue
+      else:
+         print(nb, "It's not a number")
+         exit (84)
+   nb = int(c)
+   return (check_limite_dee(nb))
+
+def get_combi(c):
+   array = c.split('_')
+   cb = 0
+   
+   if (len(array) == 2):
+      combi = check_combi(array[0])
+      ca = check_combi_nb(array[1])
+   elif (len(array) == 3 and array[0] == "full"):
+      combi = check_combi(array[0])
+      ca = check_combi_nb(array[1])
+      cb = check_combi_nb(array[2])
+   else:
+      print(c, "is bad combination")
+      exit (84)
+   return combi, ca, cb
+   
+def main():
+   arg = len(argv)
+   if (arg == 7):
+      check_dee(argv[1], argv[2], argv[3], argv[4], argv[5])
+      d1, d2, d3, d4, d5 = check_random(int(argv[1]), int(argv[2]), int(argv[3]), int(argv[4]), int(argv[5]))
+      combi, ca, cb = get_combi(argv[6])
+      start_cal(d1, d2, d3, d4, d5, combi, ca, cb)
+      exit (0)
+   
+   elif (arg == 2 and argv[1] == "-h"):
+      print("USAGE\n    ./201yams d1 d2 d3 d4 d5 c")
+      print("\nDESCRIPTION")
+      print("    d1    value of the first die (0 if not thrown)")
+      print("    d2    value of the second die (0 if not thrown)")
+      print("    d3    value of the third die (0 if not thrown)")
+      print("    d4    value of the fourth die (0 if not thrown)")
+      print("    d5    value of the fifth die (0 if not thrown)")
+      print("    c     expected combination")
+      exit (0)
+
+   else:
+      print("Wrong number of arguments")
+      exit (84)
+
+if __name__ == "__main__":
+   main()

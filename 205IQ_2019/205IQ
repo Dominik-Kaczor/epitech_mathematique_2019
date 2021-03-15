@@ -1,0 +1,67 @@
+#!/usr/bin/env python3
+
+import sys
+import math
+
+def infos(mean, standar):
+    if (mean < 0 or mean > 200):
+        return 84
+    i = 0
+    while i <= 200:
+        print("%d %.5f" % (i, Gauss(mean, standar, i)))
+        i += 1
+    return 0
+
+def mini_IQ(mean, standar, min):
+    if (mean < 0 or mean > 200):
+        return 84
+    i, j = 0, 0
+    if (min < 0 or min > 200):
+        return 84
+    while i < min :
+        j += Gauss(mean, standar, i)
+        i += 0.01
+    print("%.1f%% of people have an IQ inferior to %d" % (j, min))
+    return 0
+
+def interval_IQ(mean, standar, min, max):
+    if (mean < 0 > 200):
+        return 84
+    i, j = 0, 0
+    if (min < 0 or max < 0 or max > 200 or min > 200):
+        return 84
+    if (max < min):
+        return 84
+    while i < 200:
+        if (i >= min and i <= max):
+            j += Gauss(mean, standar, i)
+        i += 0.01
+    print("%.1f%% of people have an IQ between %d and %d" % (j, min, max))
+    return 0
+
+def Gauss(mean, standar, n):
+    return (math.exp(-math.pow(n - mean, 2) / (2 * math.pow(standar, 2))) / (standar * math.sqrt(2 * math.pi)))
+
+def main(argv):
+    try:
+        ac = len(argv)
+        if (ac <= 2):
+            if (argv[1] == "-h"):
+                print("USAGE\n\t./205IQ u q [IQ1] [IQ2] \n\nDESCRIPTION\n\tu\tmean\n\ts\tstandard deviation\n\tIQ1\tminimum IQ\n\tIQ2\tmaximum IQ")
+                return 0
+            else:
+                return 84
+        if (ac == 3):
+            return infos(int(argv[1]), int(argv[2]))
+        if (ac == 4):
+            return mini_IQ(int(argv[1]), int(argv[2]), int(argv[3]))
+        if (ac == 5):
+            return interval_IQ(int(argv[1]), int(argv[2]), int(argv[3]), int(argv[4]))
+        return 84
+    except Exception as e:
+        print(e)
+        return 84
+    return 0
+
+if (__name__ == "__main__"):
+    sys.exit(main(sys.argv))

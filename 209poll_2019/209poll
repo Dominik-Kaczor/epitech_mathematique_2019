@@ -1,0 +1,46 @@
+#!/usr/bin/env python3
+
+import sys
+from math import *
+
+class infos(object):
+    def __init__(self, pps, ss, p):
+        self.pps = pps
+        self.ss = ss
+        self.p = p
+
+def poll(infos):
+    if infos.pps < 0:
+        return 84
+    pp = infos.p / 100
+    tmp = (pp * (1 - pp) / infos.ss) * ((infos.pps - infos.ss) / (infos.pps - 1))
+    v95 = 196 * sqrt(tmp)
+    v99 = 258 * sqrt(tmp)
+    itr95 = [max(infos.p - v95, 0), min(infos.p + v95, 100)]
+    itr99 = [max(infos.p - v99, 0), min(infos.p + v99, 100)]
+    print("Population size:\t %d" % infos.pps)
+    print("Sample size:\t\t %d" % infos.ss)
+    print("Voting intentions:\t %d%%" % infos.p)
+    print("Variance:\t\t %.6f" % tmp)
+    print("95%% confidence interval: [%.2f%%; %.2f%%]" % (itr95[0], itr95[1]))
+    print("99%% confidence interval: [%.2f%%; %.2f%%]" % (itr99[0], itr99[1]))
+    return 0
+
+def main(argv):
+    try:
+        arg = len(argv)
+        if (arg == 2 and argv[1] == "-h"):
+            print ("USAGE\n\t./209poll pSize sSize p\n\nDESCRIPTION\n\tpSize\tsize of the population\n\tsSize\tsize of the sample (supposed to be representative)\n\tp\tpercentage of voting intentions for a specific candidate")
+            return 0
+        else:
+            if (arg != 4):
+                return 84
+            else:
+                return poll(infos(int(argv[1]), int(argv[2]), float(argv[3])))
+            return 84
+    except Exception as e:
+        print(e)
+        return 84
+
+if (__name__ == "__main__"):
+    exit(main(sys.argv))
